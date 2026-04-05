@@ -56,11 +56,11 @@ const InputPanel: React.FC<InputPanelProps> = ({
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-4 text-gray-700">Your Targets</h2>
+    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+      <h2 className="text-2xl font-semibold mb-4 text-gray-700 dark:text-white">Your Targets</h2>
 
       <div className="mb-4">
-        <label htmlFor="carbTarget" className="block text-gray-700 font-bold mb-2">
+        <label htmlFor="carbTarget" className="block text-gray-700 dark:text-gray-300 font-bold mb-2">
           Carb Target (grams)
         </label>
         <div className="flex items-center">
@@ -73,12 +73,12 @@ const InputPanel: React.FC<InputPanelProps> = ({
             onChange={(e) => setCarbTarget(Number(e.target.value))}
             className="w-full"
           />
-          <span className="ml-4 font-bold text-gray-800">{carbTarget}g</span>
+          <span className="ml-4 font-bold text-gray-800 dark:text-gray-100">{carbTarget}g</span>
         </div>
       </div>
 
       <div className="mb-4">
-        <label htmlFor="bottleSize" className="block text-gray-700 font-bold mb-2">
+        <label htmlFor="bottleSize" className="block text-gray-700 dark:text-gray-300 font-bold mb-2">
           Bottle Size (ml)
         </label>
         <div className="flex items-center">
@@ -92,19 +92,19 @@ const InputPanel: React.FC<InputPanelProps> = ({
             onChange={(e) => setBottleSize(Number(e.target.value))}
             className="w-full"
           />
-          <span className="ml-4 font-bold text-gray-800">{bottleSize}ml</span>
+          <span className="ml-4 font-bold text-gray-800 dark:text-gray-100">{bottleSize}ml</span>
         </div>
       </div>
 
       <div className="mb-4">
-        <label htmlFor="carbRatio" className="block text-gray-700 font-bold mb-2">
+        <label htmlFor="carbRatio" className="block text-gray-700 dark:text-gray-300 font-bold mb-2">
           Carb Ratio (Glucose:Fructose)
         </label>
         <select
           id="carbRatio"
           value={carbRatio}
           onChange={(e) => setCarbRatio(e.target.value)}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
         >
           <option value="2:1">2:1</option>
           <option value="1:0.8">1:0.8</option>
@@ -113,14 +113,14 @@ const InputPanel: React.FC<InputPanelProps> = ({
       </div>
 
       <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-2">Syrup</label>
+        <label className="block text-gray-700 dark:text-gray-300 font-bold mb-2">Syrup</label>
         <div className="flex space-x-2 mb-2">
           {syrupTemplates.map((template) => (
             <button
               key={template.name}
               onClick={() => handleSyrupChange(template.name)}
-              className={`p-2 border rounded ${
-                syrup === template.name ? 'bg-blue-500 text-white' : ''
+              className={`p-2 border rounded dark:border-gray-600 ${
+                syrup === template.name ? 'bg-blue-500 text-white dark:bg-blue-700' : 'dark:text-gray-300'
               }`}
             >
               {template.name}
@@ -128,8 +128,8 @@ const InputPanel: React.FC<InputPanelProps> = ({
           ))}
           <button
             onClick={() => setSyrup('Custom')}
-            className={`p-2 border rounded ${
-              syrup === 'Custom' ? 'bg-blue-500 text-white' : ''
+            className={`p-2 border rounded dark:border-gray-600 ${
+              syrup === 'Custom' ? 'bg-blue-500 text-white dark:bg-blue-700' : 'dark:text-gray-300'
             }`}
           >
             Custom
@@ -137,7 +137,7 @@ const InputPanel: React.FC<InputPanelProps> = ({
         </div>
         {syrup === 'Custom' && (
           <div className="mt-2">
-            <label htmlFor="syrupSugar" className="block text-gray-700 font-bold mb-2">
+            <label htmlFor="syrupSugar" className="block text-gray-700 dark:text-gray-300 font-bold mb-2">
               Sugar per 100ml pure syrup
             </label>
             <input
@@ -145,14 +145,14 @@ const InputPanel: React.FC<InputPanelProps> = ({
               id="syrupSugar"
               value={syrupSugar}
               onChange={(e) => setSyrupSugar(Number(e.target.value))}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
             />
           </div>
         )}
       </div>
 
       <div className="mb-4">
-        <label htmlFor="syrupAmount" className="block text-gray-700 font-bold mb-2">
+        <label htmlFor="syrupAmount" className="block text-gray-700 dark:text-gray-300 font-bold mb-2">
           Syrup Amount (ml)
         </label>
         <div className="flex items-center">
@@ -165,12 +165,12 @@ const InputPanel: React.FC<InputPanelProps> = ({
             onChange={(e) => setSyrupAmount(Number(e.target.value))}
             className="w-full"
           />
-          <span className="ml-4 font-bold text-gray-800">{syrupAmount}ml</span>
+          <span className="ml-4 font-bold text-gray-800 dark:text-gray-100">{syrupAmount}ml</span>
         </div>
       </div>
 
       <div className="mb-4">
-        <label className="block text-gray-700 font-bold mb-2">Ingredients</label>
+        <label className="block text-gray-700 dark:text-gray-300 font-bold mb-2">Ingredients</label>
         <div className="flex items-center">
           <input
             type="checkbox"
@@ -179,7 +179,7 @@ const InputPanel: React.FC<InputPanelProps> = ({
             onChange={(e) => setMaltodextrin(e.target.checked)}
             className="mr-2"
           />
-          <label htmlFor="maltodextrin">Maltodextrin available</label>
+          <label htmlFor="maltodextrin" className="dark:text-gray-300">Maltodextrin available</label>
         </div>
         <div className="flex items-center">
           <input
@@ -189,15 +189,15 @@ const InputPanel: React.FC<InputPanelProps> = ({
             onChange={(e) => setSugar(e.target.checked)}
             className="mr-2"
           />
-          <label htmlFor="sugar">Table sugar available</label>
+          <label htmlFor="sugar" className="dark:text-gray-300">Table sugar available</label>
         </div>
       </div>
 
       <div className="mb-4">
-        <label htmlFor="sweatRate" className="block text-gray-700 font-bold mb-2">
+        <label htmlFor="sweatRate" className="block text-gray-700 dark:text-gray-300 font-bold mb-2">
           Sweat Rate
         </label>
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between text-sm dark:text-gray-300">
           <span>Low</span>
           <span>Medium</span>
           <span>High</span>

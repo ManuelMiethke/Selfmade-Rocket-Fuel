@@ -58,29 +58,19 @@ export const calculateRecipe = (
   const glucoseFromSyrup = syrupCarbs / 2;
   const fructoseFromSyrup = syrupCarbs / 2;
 
-  let remainingGlucose = glucoseTarget - glucoseFromSyrup;
-  let remainingFructose = fructoseTarget - fructoseFromSyrup;
+  let glucoseNeeded = glucoseTarget - glucoseFromSyrup;
+  let fructoseNeeded = fructoseTarget - fructoseFromSyrup;
 
   let maltodextrinGrams = 0;
   let sugarGrams = 0;
 
-  if (maltodextrin) {
-    maltodextrinGrams = remainingGlucose > 0 ? remainingGlucose : 0;
-    remainingGlucose -= maltodextrinGrams;
+  if (fructoseNeeded > 0 && sugar) {
+    sugarGrams = fructoseNeeded * 2;
+    glucoseNeeded -= fructoseNeeded; // account for glucose from sugar
   }
 
-  if (sugar) {
-    // Sugar is 50/50 glucose/fructose
-    const sugarForFructose = remainingFructose > 0 ? remainingFructose : 0;
-    sugarGrams = sugarForFructose * 2; // to get the total sugar amount
-    remainingGlucose -= sugarForFructose;
-    remainingFructose -= sugarForFructose;
-  }
-
-  // Adjust for any remaining glucose
-  if (remainingGlucose > 0 && sugar) {
-    sugarGrams += remainingGlucose;
-    remainingGlucose = 0;
+  if (glucoseNeeded > 0 && maltodextrin) {
+    maltodextrinGrams = glucoseNeeded;
   }
 
   // Sodium calculation
@@ -95,7 +85,7 @@ export const calculateRecipe = (
   const sodiumMg = (sodiumTarget * bottleSize) / 1000;
   const saltGrams = sodiumMg / 400;
 
-  const totalCarbs = syrupCarbs + maltodextrinGrams + sugarGrams / 2 + sugarGrams / 2;
+  const totalCarbs = syrupCarbs + maltodextrinGrams + sugarGrams;
   const totalGlucose = glucoseFromSyrup + maltodextrinGrams + sugarGrams / 2;
   const totalFructose = fructoseFromSyrup + sugarGrams / 2;
   const achievedRatio =
@@ -106,9 +96,9 @@ export const calculateRecipe = (
   return {
     syrup: syrupAmount,
     maltodextrin: Math.round(maltodextrinGrams),
-    sugar: Math.round(sugarGrams / 2), // returning table sugar
+    sugar: Math.round(sugarGrams),
     salt: Math.round(saltGrams * 10) / 10,
-    water: bottleSize - syrupAmount,
+    water: bottleSize > syrupAmount ? bottleSize - syrupAmount : 0,
     totalCarbs: Math.round(totalCarbs),
     glucose: Math.round(totalGlucose),
     fructose: Math.round(totalFructose),
