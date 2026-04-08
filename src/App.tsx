@@ -12,8 +12,8 @@ function App() {
     useSyrup: false,
     syrupMixRatioWater: 6,
     syrupSugarPer100mlPrepared: 7,
-    syrupTasteIntensity: 'Medium',
-    sweatRate: 'Medium',
+    syrupTasteIntensity: 3,
+    sweatRate: 3,
   });
 
   const updateInput = <K extends keyof CalculatorInputs>(key: K, value: CalculatorInputs[K]) => {
@@ -40,6 +40,7 @@ function App() {
           value={inputs.carbTarget} 
           onChange={e => updateInput('carbTarget', Number(e.target.value))} 
           min="1"
+          step="any"
         />
       </div>
 
@@ -181,13 +182,17 @@ function App() {
       <div className="form-group">
         <label>How strong should the syrup flavor be?</label>
         <div className="radio-group">
-          {['Low', 'Medium', 'High'].map((intensity) => (
+          {([1, 2, 3, 4, 5] as Intensity[]).map((intensity) => (
             <div 
               key={intensity}
               className={`radio-btn ${inputs.syrupTasteIntensity === intensity ? 'selected' : ''}`}
-              onClick={() => updateInput('syrupTasteIntensity', intensity as Intensity)}
+              onClick={() => updateInput('syrupTasteIntensity', intensity)}
+              style={{ fontSize: '0.9rem', padding: '10px 5px' }}
             >
-              {intensity === 'Low' ? 'Light' : intensity === 'Medium' ? 'Medium' : 'Strong'}
+              {intensity === 1 ? 'Very Light' : 
+               intensity === 2 ? 'Light' : 
+               intensity === 3 ? 'Medium' : 
+               intensity === 4 ? 'Strong' : 'Very Strong'}
             </div>
           ))}
         </div>
@@ -205,13 +210,17 @@ function App() {
       <div className="form-group">
         <label>How much do you sweat?</label>
         <div className="radio-group">
-          {['Low', 'Medium', 'High'].map((intensity) => (
+          {([1, 2, 3, 4, 5] as Intensity[]).map((intensity) => (
             <div 
               key={intensity}
               className={`radio-btn ${inputs.sweatRate === intensity ? 'selected' : ''}`}
-              onClick={() => updateInput('sweatRate', intensity as Intensity)}
+              onClick={() => updateInput('sweatRate', intensity)}
+              style={{ fontSize: '0.9rem', padding: '10px 5px' }}
             >
-              {intensity === 'Low' ? 'Low' : intensity === 'Medium' ? 'Normal' : 'High'}
+              {intensity === 1 ? 'Very Low' : 
+               intensity === 2 ? 'Low' : 
+               intensity === 3 ? 'Normal' : 
+               intensity === 4 ? 'High' : 'Very High'}
             </div>
           ))}
         </div>

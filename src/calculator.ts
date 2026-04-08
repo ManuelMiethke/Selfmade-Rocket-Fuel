@@ -3,7 +3,7 @@ export type Ratio = {
   fructose: number;
 };
 
-export type Intensity = 'Low' | 'Medium' | 'High';
+export type Intensity = 1 | 2 | 3 | 4 | 5;
 
 export type CalculatorInputs = {
   carbTarget: number; // in grams
@@ -46,7 +46,11 @@ export function calculateRecipe(inputs: CalculatorInputs): Recipe {
   let syrupSugarG = 0;
 
   if (useSyrup) {
-    const intensityMultiplier = syrupTasteIntensity === 'Low' ? 20 : syrupTasteIntensity === 'Medium' ? 40 : 60;
+    const intensityMultiplier = 
+      syrupTasteIntensity === 1 ? 20 : 
+      syrupTasteIntensity === 2 ? 30 : 
+      syrupTasteIntensity === 3 ? 40 : 
+      syrupTasteIntensity === 4 ? 50 : 60;
     syrupMl = intensityMultiplier * (volume / 500);
 
     const pureSyrupSugarPer100ml = syrupSugarPer100mlPrepared * (1 + syrupMixRatioWater);
@@ -66,7 +70,11 @@ export function calculateRecipe(inputs: CalculatorInputs): Recipe {
   const maltodextrinNeeded = remainingGlucose;
 
   // 5. Sodium / Salt Calculation
-  const sodiumPerLiter = sweatRate === 'Low' ? 400 : sweatRate === 'Medium' ? 800 : 1200;
+  const sodiumPerLiter = 
+    sweatRate === 1 ? 400 : 
+    sweatRate === 2 ? 600 : 
+    sweatRate === 3 ? 800 : 
+    sweatRate === 4 ? 1000 : 1200;
   const targetSodiumMg = sodiumPerLiter * (volume / 1000);
   const saltNeeded = (targetSodiumMg / 1000) / 0.3934;
 
