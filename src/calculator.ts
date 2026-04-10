@@ -1,17 +1,17 @@
 export type Ratio = {
-  glucose: number;
-  fructose: number;
+  glucose: number | string;
+  fructose: number | string;
 };
 
 export type Intensity = 1 | 2 | 3 | 4 | 5;
 
 export type CalculatorInputs = {
-  carbTarget: number; // in grams
-  volume: number; // in ml
+  carbTarget: number | string; // in grams
+  volume: number | string; // in ml
   ratio: Ratio;
   useSyrup: boolean;
-  syrupMixRatioWater: number; // e.g. 6 for 1:6
-  syrupSugarPer100mlPrepared: number; // in grams
+  syrupMixRatioWater: number | string; // e.g. 6 for 1:6
+  syrupSugarPer100mlPrepared: number | string; // in grams
   syrupTasteIntensity: Intensity;
   sweatRate: Intensity;
 };
@@ -24,22 +24,29 @@ export type Recipe = {
   water: number; // ml
 };
 
+export function safeNum(val: number | string): number {
+  const n = Number(String(val).replace(',', '.'));
+  return isNaN(n) ? 0 : n;
+}
+
 export function calculateRecipe(inputs: CalculatorInputs): Recipe {
+  const carbTarget = safeNum(inputs.carbTarget);
+  const volume = safeNum(inputs.volume);
+  const ratioGlucose = safeNum(inputs.ratio.glucose);
+  const ratioFructose = safeNum(inputs.ratio.fructose);
+  const syrupMixRatioWater = safeNum(inputs.syrupMixRatioWater);
+  const syrupSugarPer100mlPrepared = safeNum(inputs.syrupSugarPer100mlPrepared);
+
   const {
-    carbTarget,
-    volume,
-    ratio,
     useSyrup,
-    syrupMixRatioWater,
-    syrupSugarPer100mlPrepared,
     syrupTasteIntensity,
     sweatRate,
   } = inputs;
 
   // 1. Target Glucose & Fructose
-  const totalParts = ratio.glucose + ratio.fructose;
-  const targetGlucose = carbTarget * (ratio.glucose / totalParts);
-  const targetFructose = carbTarget * (ratio.fructose / totalParts);
+  const totalParts = ratioGlucose + ratioFructose;
+  const targetGlucose = totalParts > 0 ? carbTarget * (ratioGlucose / totalParts) : 0;
+  const targetFructose = totalParts > 0 ? carbTarget * (ratioFructose / totalParts) : 0;
 
   // 2. Syrup Calculation
   let syrupMl = 0;
